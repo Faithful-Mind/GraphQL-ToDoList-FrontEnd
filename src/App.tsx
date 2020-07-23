@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Input, Row, Col } from 'antd';
+import {
+  Button, Input, Row, Col,
+} from 'antd';
 import './App.css';
 import TodoItem, { Todo } from './components/TodoItem/TodoItem';
 
@@ -13,34 +15,34 @@ class App extends Component<{}, State> {
     super(props);
     this.state = {
       todos: JSON.parse(localStorage.getItem('todos') ?? '[]'),
-      newTodo: ''
+      newTodo: '',
     };
   }
 
   handleClickDone(index: number) {
-    console.log('i: ' + index);
-    this.setState({
-      todos: this.state.todos.map((e, i) => i === index ? {...e, isDone: !e.isDone } : e)
-    }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
+    console.log(`i: ${index}`);
+    this.setState((prevState) => ({
+      todos: prevState.todos.map((e, i) => (i === index ? { ...e, isDone: !e.isDone } : e)),
+    }), () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
   }
 
   handleAdd() {
-    this.setState({
-      todos: [{ content: this.state.newTodo, isDone: false }, ...this.state.todos],
-      newTodo: ''
-    }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
+    this.setState((prevState) => ({
+      todos: [{ content: prevState.newTodo, isDone: false }, ...prevState.todos],
+      newTodo: '',
+    }), () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
   }
 
   handleRemove(index: number) {
-    this.setState({
-      todos: this.state.todos.filter((e, i) => i !== index)
-    }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
+    this.setState((prevState) => ({
+      todos: prevState.todos.filter((e, i) => i !== index),
+    }), () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
   }
 
   handleEdit(index: number, value: string) {
-    this.setState({
-      todos: this.state.todos.map((e, i) => i === index ? { ...e, content: value } : e)
-    }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
+    this.setState((prevState) => ({
+      todos: prevState.todos.map((e, i) => (i === index ? { ...e, content: value } : e)),
+    }), () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
   }
 
   render() {
@@ -51,7 +53,7 @@ class App extends Component<{}, State> {
             <Input
               placeholder="Thing to do"
               value={this.state.newTodo}
-              onChange={e => this.setState({ newTodo: e.target.value})}
+              onChange={(e) => this.setState({ newTodo: e.target.value })}
             />
           </Col>
           <Col span={4}>
@@ -59,15 +61,16 @@ class App extends Component<{}, State> {
           </Col>
         </Row>
         <div className="todo-box">
-          {this.state.todos.map((e, i) =>
+          {this.state.todos.map((e, i) => (
             <TodoItem
-              {...e}
+              content={e.content}
+              isDone={e.isDone}
               key={i}
               handleClickDone={this.handleClickDone.bind(this, i)}
               handleRemove={this.handleRemove.bind(this, i)}
               handleEdit={this.handleEdit.bind(this, i)}
             />
-          )}
+          ))}
         </div>
       </div>
     );

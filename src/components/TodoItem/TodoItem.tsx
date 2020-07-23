@@ -4,11 +4,11 @@ import './todo-item.css';
 
 import TodoEdit from '../TodoEdit/TodoEdit';
 
-interface TodoProps extends Todo {
+type TodoProps = {
   handleClickDone: Function;
   handleRemove: Function;
   handleEdit: Function;
-}
+} & Todo;
 
 class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
   constructor(props: Readonly<TodoProps>) {
@@ -17,24 +17,26 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
   }
 
   handleEditClick() {
-    this.setState({
-      isEditing: !this.state.isEditing
-    });
+    this.setState((prevState) => ({
+      isEditing: !prevState.isEditing,
+    }));
   }
 
   handleEditOk() {
-    this.setState({
-      isEditing: !this.state.isEditing
-    });
+    this.setState((prevState) => ({
+      isEditing: !prevState.isEditing,
+    }));
   }
 
   render() {
-    const { content, isDone, handleClickDone, handleRemove, handleEdit } = this.props;
-    return (!isDone)
-      ? (
-        (!this.state.isEditing) ? (
+    const {
+      content, isDone, handleClickDone, handleRemove, handleEdit,
+    } = this.props;
+    if (!isDone) {
+      if (!this.state.isEditing) {
+        return (
           <Row>
-            <Col span={18} onClick={()=>handleClickDone()}>
+            <Col span={18} onClick={() => handleClickDone()}>
               {content}
             </Col>
             <Col span={2}>
@@ -44,28 +46,34 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
               <Button onClick={() => handleRemove()}>-</Button>
             </Col>
           </Row>
-        ) : (
-          // layouts for editing
-          <TodoEdit
-            content={content}
-            handleEdit={handleEdit}
-            handleEditOk={this.handleEditOk.bind(this)}
-          />
-        )
-      ) : (
-        // layouts for done item
-        <Row>
-          <Col span={20} className='done' onClick={()=>handleClickDone()}>
-            {content}
-          </Col>
-          <Col span={4}>
-            <Button onClick={() => handleRemove()}>-</Button>
-          </Col>
-        </Row>
+        );
+      }
+      return (
+        // layouts for editing
+        <TodoEdit
+          content={content}
+          handleEdit={handleEdit}
+          handleEditOk={this.handleEditOk.bind(this)}
+        />
       );
+    }
+    return (
+      // layouts for done item
+      <Row>
+        <Col span={20} className="done" onClick={() => handleClickDone()}>
+          {content}
+        </Col>
+        <Col span={4}>
+          <Button onClick={() => handleRemove()}>-</Button>
+        </Col>
+      </Row>
+    );
   }
-};
+}
 
-export interface Todo { content: string, isDone: boolean }
+export interface Todo {
+  content: string;
+  isDone: boolean;
+}
 
 export default TodoItem;

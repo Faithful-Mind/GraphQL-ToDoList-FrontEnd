@@ -11,6 +11,7 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.4.3",
+    "eslint-config-airbnb": "^18.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -23,7 +24,23 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "airbnb",
+      "plugin:import/typescript"
+    ],
+    "rules": {
+      "import/extensions": ["error", "always", {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }],
+      "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
+      "react/no-array-index-key": 1,
+      "react/jsx-no-bind": 1,
+      "react/destructuring-assignment": 0
+    }
   },
   "browserslist": {
     "production": [
