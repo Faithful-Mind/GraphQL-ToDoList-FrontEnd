@@ -37,6 +37,12 @@ class App extends Component<{}, State> {
     }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
   }
 
+  handleEdit(index: number, value: string) {
+    this.setState({
+      todos: this.state.todos.map((e, i) => i === index ? { ...e, content: value } : e)
+    }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)));
+  }
+
   render() {
     return (
       <div className="App">
@@ -59,6 +65,7 @@ class App extends Component<{}, State> {
               key={i}
               handleClickDone={this.handleClickDone.bind(this, i)}
               handleRemove={this.handleRemove.bind(this, i)}
+              handleEdit={this.handleEdit.bind(this, i)}
             />
           )}
         </div>
