@@ -10,29 +10,39 @@ type TodoProps = {
   handleEdit: (id: string, value: string) => void;
 } & Todo;
 
-class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
+type State = { isEditing: boolean, newContent?: string }
+
+class TodoItem extends Component<TodoProps, State> {
   constructor(props: Readonly<TodoProps>) {
     super(props);
     this.state = { isEditing: false };
     this.handleEditClick = this.handleEditClick.bind(this);
     this.handleEditOk = this.handleEditOk.bind(this);
+    this.handleEditing = this.handleEditing.bind(this);
   }
 
   handleEditClick() {
     this.setState((prevState) => ({
       isEditing: !prevState.isEditing,
+      newContent: this.props.content,
     }));
   }
 
   handleEditOk() {
+    if (this.state.newContent) this.props.handleEdit(this.props.id, this.state.newContent);
     this.setState((prevState) => ({
       isEditing: !prevState.isEditing,
+      newContent: undefined,
     }));
+  }
+
+  handleEditing(value: string) {
+    this.setState({ newContent: value });
   }
 
   render() {
     const {
-      id, content, isDone, handleClickDone, handleRemove, handleEdit,
+      id, content, isDone, handleClickDone, handleRemove,
     } = this.props;
     if (!isDone) {
       if (!this.state.isEditing) {
@@ -53,9 +63,8 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
       return (
         // layouts for editing
         <TodoEdit
-          id={id}
-          content={content}
-          handleEdit={handleEdit}
+          newContent={this.state.newContent}
+          handleEditing={this.handleEditing}
           handleEditOk={this.handleEditOk}
         />
       );
