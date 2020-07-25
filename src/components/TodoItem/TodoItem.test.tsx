@@ -1,32 +1,37 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import TodoItem from './TodoItem';
 
-let e = { content: 'eat meat', isDone: false };
+let e = {
+  id: '123456789012345678901234',
+  content: 'eat meat',
+  isDone: false,
+};
 function handleClickDone() {
   e.isDone = !e.isDone;
 }
-function handleRemove() {
-  e = { content: '', isDone: false };
-}
-function handleEdit(content: string) {
+function handleEdit(id:string, content: string) {
   e.content = content;
 }
 
 const theElement = () => (
   <TodoItem
+    id={e.id}
     content={e.content}
     isDone={e.isDone}
     handleClickDone={handleClickDone}
-    handleRemove={handleRemove}
+    handleRemove={jest.fn()}
     handleEdit={handleEdit}
   />
 );
 
 beforeEach(() => {
-  e = { content: 'eat meat', isDone: false };
+  e = {
+    id: '123456789012345678901234',
+    content: 'eat meat',
+    isDone: false,
+  };
 });
 
 afterEach(cleanup);
@@ -60,11 +65,12 @@ test('todo content editing works', () => {
   fireEvent.click(editBtnElement);
 
   const editingElement = getByDisplayValue(/eat meat/i);
-  userEvent.type(editingElement, 'eat vegetables');
-  // miraculously works after manually rerender -_-!
-  rerender(theElement());
+  fireEvent.change(editingElement, { target: { value: 'eat vegetables' } });
+
   const okBtnElement = getByText('OK');
   fireEvent.click(okBtnElement);
+  rerender(theElement()); // miraculously works after manually rerender -_-!
+
   const contentElement = getByText(/eat vegetables/i);
   expect(contentElement).toBeInTheDocument();
 });
