@@ -17,6 +17,7 @@ class App extends Component<{}, State> {
       todos: JSON.parse(localStorage.getItem('todos') ?? '[]'),
       newTodo: '',
     };
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   handleClickDone(index: number) {
@@ -57,7 +58,7 @@ class App extends Component<{}, State> {
             />
           </Col>
           <Col span={4}>
-            <Button type="primary" onClick={() => this.handleAdd()}>+</Button>
+            <Button type="primary" onClick={this.handleAdd}>+</Button>
           </Col>
         </Row>
         <div className="todo-box">

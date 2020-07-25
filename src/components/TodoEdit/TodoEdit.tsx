@@ -5,8 +5,8 @@ import {
 
 type TodoProps = {
   content: string;
-  handleEdit: Function;
-  handleEditOk: Function;
+  handleEdit: (value: string) => void;
+  handleEditOk: () => void;
 };
 
 const TodoEdit: FC<TodoProps> = ({ content, handleEdit, handleEditOk }: TodoProps) => (
@@ -19,7 +19,7 @@ const TodoEdit: FC<TodoProps> = ({ content, handleEdit, handleEditOk }: TodoProp
       />
     </Col>
     <Col span={4}>
-      <Button onClick={() => handleEditOk()}>OK</Button>
+      <Button onClick={handleEditOk}>OK</Button>
     </Col>
   </Row>
 );
