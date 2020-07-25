@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.0.2",
+    "@apollo/react-components": "^4.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -12,6 +14,7 @@
     "@types/react-dom": "^16.9.8",
     "antd": "^4.4.3",
     "eslint-config-airbnb": "^18.2.0",
+    "graphql": "^15.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -30,15 +33,25 @@
       "plugin:import/typescript"
     ],
     "rules": {
-      "import/extensions": ["error", "always", {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }],
-      "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
-      "react/no-array-index-key": 1,
-      "react/jsx-no-bind": 1,
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+        }
+      ],
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".jsx",
+            ".tsx"
+          ]
+        }
+      ],
       "react/destructuring-assignment": 0
     }
   },

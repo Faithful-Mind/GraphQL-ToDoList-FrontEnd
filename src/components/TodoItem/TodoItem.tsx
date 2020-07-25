@@ -5,9 +5,9 @@ import './todo-item.css';
 import TodoEdit from '../TodoEdit/TodoEdit';
 
 type TodoProps = {
-  handleClickDone: () => void;
-  handleRemove: () => void;
-  handleEdit: (value: string) => void;
+  handleClickDone: (id: string) => void;
+  handleRemove: (id: string) => void;
+  handleEdit: (id: string, value: string) => void;
 } & Todo;
 
 class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
@@ -32,20 +32,20 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
 
   render() {
     const {
-      content, isDone, handleClickDone, handleRemove, handleEdit,
+      id, content, isDone, handleClickDone, handleRemove, handleEdit,
     } = this.props;
     if (!isDone) {
       if (!this.state.isEditing) {
         return (
           <Row>
-            <Col span={18} onClick={handleClickDone}>
+            <Col span={18} onClick={() => handleClickDone(id)}>
               {content}
             </Col>
             <Col span={2}>
               <Button onClick={this.handleEditClick}>Edit</Button>
             </Col>
             <Col span={4}>
-              <Button onClick={handleRemove}>-</Button>
+              <Button onClick={() => handleRemove(id)}>-</Button>
             </Col>
           </Row>
         );
@@ -53,6 +53,7 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
       return (
         // layouts for editing
         <TodoEdit
+          id={id}
           content={content}
           handleEdit={handleEdit}
           handleEditOk={this.handleEditOk}
@@ -62,11 +63,11 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
     return (
       // layouts for done item
       <Row>
-        <Col span={20} className="done" onClick={handleClickDone}>
+        <Col span={20} className="done" onClick={() => handleClickDone(id)}>
           {content}
         </Col>
         <Col span={4}>
-          <Button onClick={handleRemove}>-</Button>
+          <Button onClick={() => handleRemove(id)}>-</Button>
         </Col>
       </Row>
     );
@@ -74,6 +75,7 @@ class TodoItem extends Component<TodoProps, { isEditing: boolean }> {
 }
 
 export interface Todo {
+  id: string;
   content: string;
   isDone: boolean;
 }

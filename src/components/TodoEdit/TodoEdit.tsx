@@ -4,18 +4,21 @@ import {
 } from 'antd';
 
 type TodoProps = {
+  id: string,
   content: string;
-  handleEdit: (value: string) => void;
+  handleEdit: (id: string, value: string) => void;
   handleEditOk: () => void;
 };
 
-const TodoEdit: FC<TodoProps> = ({ content, handleEdit, handleEditOk }: TodoProps) => (
+const TodoEdit: FC<TodoProps> = ({
+  id, content, handleEdit, handleEditOk,
+}: TodoProps) => (
   <Row>
     <Col span={20}>
       <Input
         placeholder="Thing to do"
         value={content}
-        onChange={(e) => handleEdit(e.target.value)}
+        onChange={(e) => handleEdit(id, e.target.value)}
       />
     </Col>
     <Col span={4}>
